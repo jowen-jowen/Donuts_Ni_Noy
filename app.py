@@ -9,9 +9,9 @@ def home():
 def about():
     return render_template('About.html')
 
-@app.route('/contact')
-def contact():
-    return render_template('Contact.html')
+@app.route('/shops')
+def shops():
+    return render_template('Shops.html')
 
 @app.route('/products')
 def products():
