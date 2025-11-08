@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key = "Css@12345"
 
-# --- Database connection ---
+# Database conn
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
@@ -15,7 +15,6 @@ def get_db_connection():
         database="donut_db"
     )
 
-# --- Home, About, Shops, Products ---
 @app.route('/')
 def home():
     return render_template('Home.html')
@@ -32,7 +31,6 @@ def cart():
 def shops():
     return render_template('Shops.html')
 
-# --- Register route ---
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -58,7 +56,6 @@ def register():
 
     return redirect(url_for('login'))
 
-# --- Login route ---
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -78,13 +75,22 @@ def login():
         if user:
             if check_password_hash(user['password'], password):
                 session['name'] = user['name']
-                return redirect(url_for('logged'))
+                session['user_type'] = user.get('user_type', 'user')  # default to user
+
+
+                if user['user_type'] == 'admin':
+                    return redirect(url_for('admin'))
+                else:
+                    return redirect(url_for('logged'))
             else:
+                # wrong password
                 return redirect(url_for('login'))
         else:
+            # mo user
             return redirect(url_for('login'))
 
     return render_template('LogReg.html')
+
 
 # login success
 @app.route('/logged')
@@ -98,7 +104,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-app.route('/admin')
+@app.route('/admin')
 def admin():
     return render_template('Admin.html')
 
