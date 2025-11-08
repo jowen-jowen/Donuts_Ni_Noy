@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Contact</title>
+    <title>Products</title>
+
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -17,14 +18,38 @@
         }
 
         body {
+            font-family: 'Anton', sans-serif;
+            font-family: 'Italianno', cursive;
             font-family: 'Lobster', cursive;
-            background: none;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: flex-start;
             overflow-x: hidden;
-            background: #FD5DA8;
         }
 
-        .logo img {
-            width: 125px;
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #f5821f, #FD5DA8);
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25); /* soft fade effect */
+            z-index: -1;
         }
 
         .navbar {
@@ -32,14 +57,10 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 20px 15%; /* same as Login/Register */
-            background: rgba(0, 0, 0, 0.5); /* semi-transparent */
+            padding: 20px 15%;
+            background: rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 10;
-        }
-
-        .logo img {
-            width: 125px;
         }
 
         nav {
@@ -59,7 +80,7 @@
         nav ul li a {
             text-decoration: none;
             color: #ffffff;
-            font-size: 18px;
+            font-size: 25px;
             transition: 0.3s;
         }
 
@@ -75,9 +96,25 @@
                 margin-left: 15px;
             }
         }
+        a {
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        p {
+            color: #000000;
+        }
 
 
-        .contacts {
+
+        h2 {
+            color: #000000;
+            font-weight: normal;
+        }
+
+
+
+        .shops {
             text-align: center;
             background: rgba(245, 130, 31, 0.9);
             border-radius: 30px;
@@ -87,19 +124,19 @@
             color: #000;
         }
 
-        .contacts h1 {
+        .shops h1 {
             color: black;
             font-size: 48px;
             margin-bottom: 30px;
         }
 
-        .contacts p {
+        .shops p {
             color: black;
             font-size: 22px;
             line-height: 1.8;
         }
 
-        .contacts b {
+        .shops b {
             color: black;
         }
 
@@ -112,42 +149,43 @@
                 margin-left: 15px;
             }
 
-            .contacts {
+            .shops {
                 width: 90%;
                 padding: 30px;
             }
 
-            .contacts h1 {
+            .shops h1 {
                 font-size: 32px;
             }
 
-            .contacts p {
+            .shops p {
                 font-size: 18px;
             }
         }
+
     </style>
 </head>
-
 <body>
-
-
     <div class="navbar">
-        <div class="logo">
-            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('products') }}">Products</a></li>
-                <li><a href="{{ url_for('shops') }}">Shops</a></li>
-                <li><a href="{{ url_for('login') }}">Login/Register</a></li>
-            </ul>
-        </nav>
-    </div>
+                <div class="logo">
+                    <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="125px" alt="Dunkin' logo"></a>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('shops') }}">Shops</a></li>
+                        <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                        <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                    </ul>
+                </nav>
+            </div>
 
-    <div class="contacts">
+    <br><br><br>
+
+        <div class="shops">
         <h1>Shops</h1>
 
     </div>
+
 </body>
 </html>

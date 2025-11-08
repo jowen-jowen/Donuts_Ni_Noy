@@ -11,11 +11,11 @@ def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",  # Your MySQL password
+        password="Css@12345",  # password
         database="donut_db"
     )
 
-# --- Home, About, Shops, Products routes ---
+# --- Home, About, Shops, Products ---
 @app.route('/')
 def home():
     return render_template('Home.html')
@@ -24,13 +24,13 @@ def home():
 def about():
     return render_template('About.html')
 
+@app.route('/cart')
+def cart():
+    return render_template('Cart.html')
+
 @app.route('/shops')
 def shops():
     return render_template('Shops.html')
-
-@app.route('/products')
-def products():
-    return render_template('Products.html')
 
 # --- Register route ---
 @app.route('/register', methods=['POST'])
@@ -86,21 +86,23 @@ def login():
 
     return render_template('LogReg.html')
 
-
+# login success
 @app.route('/logged')
 def logged():
     name = session.get('name', 'Guest')
     return render_template('Success.html', name=name)
 
-
+# logout
 @app.route('/logout')
 def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/cart')
-def cart():
-    return render_template('Cart.html')
+app.route('/admin')
+def admin():
+    return render_template('Admin.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

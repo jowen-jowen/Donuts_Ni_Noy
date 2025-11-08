@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Cart</title>
-
+    <title>Contact</title>
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,19 +17,52 @@
         }
 
         body {
+            font-family: 'Anton', sans-serif;
+            font-family: 'Italianno', cursive;
             font-family: 'Lobster', cursive;
-            background: none;
-            background: #FD5DA8;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: flex-start;
             overflow-x: hidden;
         }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #f5821f, #FD5DA8);
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25); /* soft fade effect */
+            z-index: -1;
+        }
+
+        .logo img {
+            width: 125px;
+        }
+
+        /* navigation bar*/
 
         .navbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 20px 15%;
-            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 15%; /* same as Login/Register */
+            background: rgba(0, 0, 0, 0.5); /* semi-transparent */
             position: relative;
             z-index: 10;
         }
@@ -50,13 +82,13 @@
 
         nav ul li {
             display: inline-block;
-            margin-left: 30px;
+            margin-left: 30px; /* spacing between links */
         }
 
         nav ul li a {
             text-decoration: none;
             color: #ffffff;
-            font-size: 18px;
+            font-size: 25px;
             transition: 0.3s;
         }
 
@@ -68,31 +100,84 @@
             .navbar {
                 padding: 15px 5%;
             }
+            nav ul li {
+                margin-left: 15px;
+            }
+        }
+
+
+
+        .cart {
+            text-align: center;
+            background: rgba(245, 130, 31, 0.9);
+            border-radius: 30px;
+            padding: 60px;
+            max-width: 700px;
+            margin: 150px auto;
+            color: #000;
+        }
+
+        .cart h1 {
+            color: black;
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+
+        .cart p {
+            color: black;
+            font-size: 22px;
+            line-height: 1.8;
+        }
+
+        .cart b {
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 5%;
+            }
 
             nav ul li {
                 margin-left: 15px;
             }
 
+            .cart {
+                width: 90%;
+                padding: 30px;
+            }
+
+            .cart h1 {
+                font-size: 32px;
+            }
+
+            .cart p {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
+
 <body>
 
 
         <div class="navbar">
             <div class="logo">
-            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" alt="Dunkin' Logo"></a>
+            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
             </div>
             <nav>
                 <ul>
                     <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('products') }}">Products</a></li>
                     <li><a href="{{ url_for('shops') }}">Shops</a></li>
+                    <li><a href="{{ url_for('cart') }}">Cart</a></li>
                     <li><a href="{{ url_for('login') }}">Login/Register</a></li>
                 </ul>
             </nav>
         </div>
 
+    <div class="cart">
+        <h1>Cart</h1>
 
+    </div>
 </body>
 </html>
