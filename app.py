@@ -22,8 +22,9 @@ def get_db_connection():
 
 import os
 from werkzeug.utils import secure_filename
-
+# where the uploaded pictures are stored
 UPLOAD_FOLDER = 'static/uploads'
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -36,7 +37,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------- upload_shops Route = Shops Image Upload
+#----------------------------------------------------------------------------------------------------------------------- upload_shops Route = Shops Image Upload
 
 # for uploading the pictures to shops table in the database
 @app.route('/upload_shops', methods=['POST'])
@@ -55,7 +56,8 @@ def upload_shops():
             if fileshop and allowed_file(fileshop.filename):
                 filename = secure_filename(fileshop.filename)
                 fileshop.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                cursor.execute("INSERT INTO shops (name, shop_img) VALUES (%s, %s)", (shop_name, filename))
+                cursor.execute("INSERT INTO shops (name, shop_img) VALUES (%s, %s)",
+                               (shop_name, filename))
 
         conn.commit()
         cursor.close()
@@ -66,7 +68,7 @@ def upload_shops():
     except Exception as e:
         return f"Upload failed: {e}"
 
-#----------------------------------------------------------------------------------------------------------------------------------------- upload_img Route = Product Image Upload
+#----------------------------------------------------------------------------------------------------------------------- upload_img Route = Product Image Upload
 
 # for uploading the images into the dunkin table in database
 @app.route('/upload_img', methods=['POST'])
@@ -100,25 +102,25 @@ def upload_img():
     except Exception as e:
         return f"Upload failed: {e}"
 
-#----------------------------------------------------------------------------------------------------------------------------------------- home Route
+#----------------------------------------------------------------------------------------------------------------------- home Route
 @app.route('/')
 def home():
     return render_template('Home.html')
 
-#----------------------------------------------------------------------------------------------------------------------------------------- about Route
+#----------------------------------------------------------------------------------------------------------------------- about Route
 
 @app.route('/about')
 def about():
     return render_template('About.html')
 
-#----------------------------------------------------------------------------------------------------------------------------------------- cart Route
+#----------------------------------------------------------------------------------------------------------------------- cart Route
 
 @app.route('/cart')
 def cart():
     return render_template('Cart.html')
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------- shops Route = Retrieving Images from shop table to Shop Page
+#----------------------------------------------------------------------------------------------------------------------- shops Route = Retrieving Images from shop table to Shop Page
 
 # for retrieving the images from shops table into the Shops Page
 @app.route('/shops')
@@ -131,7 +133,7 @@ def shops():
     conn.close()
     return render_template('Shops.html', shops=shops_com)
 
-#----------------------------------------------------------------------------------------------------------------------------------------- admin Route = retrieval and testing if the files are uploaded
+#----------------------------------------------------------------------------------------------------------------------- admin Route = retrieval and testing if the files are uploaded
 
 # for retrieving and testing if the images are being uploaded
 @app.route('/admin')
@@ -145,13 +147,13 @@ def admin():
     return render_template('Admin.html', images=images)
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------- logout Route
+#----------------------------------------------------------------------------------------------------------------------- logout Route
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
 
-#----------------------------------------------------------------------------------------------------------------------------------------- register Route = Register (with OTP)
+#----------------------------------------------------------------------------------------------------------------------- register Route = Register (with OTP)
 # Register (with OTP)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -190,8 +192,8 @@ def register():
 
     return render_template('LogReg.html')
 
-#----------------------------------------------------------------------------------------------------------------------------------------- verify_otp Route = Verifying the OTP and holding the name,email,password
-#-----------------------------------------------------------------------------------------------------------------------------------------                    until the OTP is correct
+#----------------------------------------------------------------------------------------------------------------------- verify_otp Route = Verifying the OTP and holding the name,email,password
+#-----------------------------------------------------------------------------------------------------------------------                    until the OTP is correct
 
 # for verification of OTP
 @app.route('/verify_otp', methods=['POST'])
@@ -228,8 +230,8 @@ def verify_otp():
             email=session.get('pending_email')
         )
 
-#----------------------------------------------------------------------------------------------------------------------------------------- login Route = Retrieval of email/password and comparing the hashed password
-#-----------------------------------------------------------------------------------------------------------------------------------------               into the real password
+#----------------------------------------------------------------------------------------------------------------------- login Route = Retrieval of email/password and comparing the hashed password
+#-----------------------------------------------------------------------------------------------------------------------               into the real password
 # retrieving the email and password and comparing if the hashed password is the same to the unhashed password
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -264,7 +266,7 @@ def login():
 
     return render_template('LogReg.html')
 
-#----------------------------------------------------------------------------------------------------------------------------------------- logged Route = For Checking if the user got logged in
+#----------------------------------------------------------------------------------------------------------------------- logged Route = For Checking if the user got logged in
 # if the user is successfully logged it will go to the success Page
 @app.route('/logged')
 def logged():
