@@ -121,6 +121,17 @@ def cart():
 
 
 #----------------------------------------------------------------------------------------------------------------------- shops Route = Retrieving Images from shop table to Shop Page
+# for removing the chosen shop in the database
+@app.route('/remove_shop/<shop_name>', methods=['POST'])
+def remove_shop(shop_name):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM shops WHERE name = %s", (shop_name,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('admin'))  # Go back to admin page
+
 
 # for retrieving the images from shops table into the Shops Page
 @app.route('/shops')
@@ -136,16 +147,20 @@ def shops():
 #----------------------------------------------------------------------------------------------------------------------- admin Route = retrieval and testing if the files are uploaded
 
 # for retrieving and testing if the images are being uploaded
-@app.route('/admin')
-def admin():
+# fetching data from database
+def fetch_all(query):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM dunkin")
-    images = cursor.fetchall()
+    cursor.execute(query)
+    rows = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('Admin.html', images=images)
-
+    return rows
+@app.route('/admin')
+def admin():
+    images = fetch_all("SELECT * FROM dunkin")
+    shops_com = fetch_all("SELECT * FROM shops")
+    return render_template('Admin.html', images=images, shops=shops_com)
 
 #----------------------------------------------------------------------------------------------------------------------- logout Route
 @app.route('/logout')
@@ -273,6 +288,9 @@ def logged():
     name = session.get('name', 'Guest')
     return render_template('Success.html', name=name)
 
+@app.route('/dunkin')
+def dunkin():
+    return render_template('Dunkin.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

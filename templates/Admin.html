@@ -153,6 +153,105 @@
             color: #000;
             margin-top: 40px;
         }
+
+        .shops {
+            text-align: center;
+            background: rgba(245, 130, 31, 0.9);
+            border-radius: 30px;
+            padding: 60px;
+            max-width: 1200px;
+            margin: 5% auto;
+            color: #000;
+}
+
+
+        .shops h1 {
+            color: black;
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+
+        .shops p {
+            color: black;
+            font-size: 22px;
+            line-height: 1.8;
+        }
+
+        .shops b {
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            nav ul li {
+                margin-left: 15px;
+            }
+
+            .shops {
+                width: 90%;
+                padding: 30px;
+            }
+
+            .shops h1 {
+                font-size: 32px;
+            }
+
+            .shops p {
+                font-size: 18px;
+            }
+        }
+        .shop-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+
+        .shop-card {
+            background: white;
+            border-radius: 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: black;
+            overflow: hidden;
+        }
+
+        .shop-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+
+        .shop-card h2 {
+            font-size: 22px;
+            margin: 15px 0;
+            color: black;
+            font-family: 'Lobster', cursive;
+        }
+
+        .shop-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .remove-form {
+            display: block; /* ensure remove button form is visible */
+            margin-top: 10px;
+            text-align: center;
+        }
+
+
     </style>
 </head>
 <body>
@@ -165,7 +264,12 @@
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('shops') }}">Shops</a></li>
                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                {% if session.get('name') %}
+                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </div>
@@ -175,8 +279,6 @@
 
         <!-- Buttons -->
         <button id="toggleShopForm">➕ Add Shops</button>
-
-
         <button id="toggleProductForm">➕ Add Shop Products</button>
 
         <!-- Add Shop Form -->
@@ -202,16 +304,43 @@
         </form>
     </div>
 
+
+
+    <div class="shops">
+        <h1>Shops</h1>
+
+        <div class="shop-container">
+            {% for shop_com in shops %}
+                <div class="shop-card">
+                    <img src="{{ url_for('static', filename='uploads/' ~ shop_com.shop_img) }}"
+                         alt="{{ shop_com.name }}">
+                    <h2>{{ shop_com.name }}</h2>
+
+                    <!-- Remove button -->
+                    <form class="remove-form" action="{{ url_for('remove_shop', shop_name=shop_com.name) }}"
+                          method="POST" style="margin-bottom: 10px;">
+                        <button type="submit"
+                                style="background-color: red; color: white; border-radius: 5px; padding: 5px 10px; border: none; cursor: pointer;">
+                            Remove
+                        </button>
+                    </form>
+
+                </div>
+            {% endfor %}
+        </div>
+
+
     <!-- for testing if the images are being uploaded into the database table-->
     <!-- for products onlY-->
-    <h2>Uploaded Products</h2>
-    <div class="image-grid">
-        {% for img in images %}
-            <div class="image-card">
-                <img src="{{ url_for('static', filename='uploads/' + img.dunkin_img) }}" alt="{{ img.name }}">
-                <p>{{ img.name }}</p>
-            </div>
-        {% endfor %}
+        <h2>Uploaded Products</h2>
+        <div class="image-grid">
+            {% for img in images %}
+                <div class="image-card">
+                    <img src="{{ url_for('static', filename='uploads/' + img.dunkin_img) }}" alt="{{ img.name }}">
+                    <p>{{ img.name }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <script>

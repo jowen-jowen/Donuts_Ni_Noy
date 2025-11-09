@@ -166,13 +166,18 @@
             <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
             </div>
             <nav>
-                <ul>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('shops') }}">Shops</a></li>
-                    <li><a href="{{ url_for('cart') }}">Cart</a></li>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('shops') }}">Shops</a></li>
+                <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                {% if session.get('name') %}
+                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
                     <li><a href="{{ url_for('login') }}">Login/Register</a></li>
-                </ul>
-            </nav>
+                {% endif %}
+            </ul>
+        </nav>
         </div>
 
     <div class="cart">

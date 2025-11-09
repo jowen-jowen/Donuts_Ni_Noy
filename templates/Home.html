@@ -207,7 +207,12 @@
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('shops') }}">Shops</a></li>
                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                {% if session.get('name') %}
+                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </div>

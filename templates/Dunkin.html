@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Products</title>
-
+    <title>Dunkin' Donut</title>
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap"
+          rel="stylesheet">
 
     <style>
         * {
@@ -29,7 +28,6 @@
             justify-content: flex-start;
             overflow-x: hidden;
         }
-
         body::before {
             content: "";
             position: fixed;
@@ -48,19 +46,29 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.25); /* soft fade effect */
             z-index: -1;
         }
+
+        .logo img {
+            width: 125px;
+        }
+
+        /* navigation bar*/
 
         .navbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 20px 15%;
-            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 15%; /* same as Login/Register */
+            background: rgba(0, 0, 0, 0.5); /* semi-transparent */
             position: relative;
             z-index: 10;
+        }
+
+        .logo img {
+            width: 125px;
         }
 
         nav {
@@ -74,7 +82,7 @@
 
         nav ul li {
             display: inline-block;
-            margin-left: 30px;
+            margin-left: 30px; /* spacing between links */
         }
 
         nav ul li a {
@@ -96,48 +104,32 @@
                 margin-left: 15px;
             }
         }
-        a {
-            text-decoration: none;
-            color: #ffffff;
-        }
-
-        p {
-            color: #000000;
-        }
 
 
 
-        h2 {
-            color: #000000;
-            font-weight: normal;
-        }
-
-
-
-        .shops {
+        .dunkin {
             text-align: center;
             background: rgba(245, 130, 31, 0.9);
             border-radius: 30px;
             padding: 60px;
-            max-width: 1200px;
-            margin: 5% auto;
+            max-width: 700px;
+            margin: 150px auto;
             color: #000;
-}
+        }
 
-
-        .shops h1 {
+        .dunkin h1 {
             color: black;
             font-size: 48px;
             margin-bottom: 30px;
         }
 
-        .shops p {
+        .dunkin p {
             color: black;
             font-size: 22px;
             line-height: 1.8;
         }
 
-        .shops b {
+        .dunkin b {
             color: black;
         }
 
@@ -150,99 +142,45 @@
                 margin-left: 15px;
             }
 
-            .shops {
+            .dunkin {
                 width: 90%;
                 padding: 30px;
             }
 
-            .shops h1 {
+            .dunkin h1 {
                 font-size: 32px;
             }
 
-            .shops p {
+            .dunkin p {
                 font-size: 18px;
             }
         }
-        .shop-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 40px;
-        }
-
-
-        .shop-card {
-            background: white;
-            border-radius: 20px;
-            width: 250px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            color: black;
-            overflow: hidden;
-        }
-
-        .shop-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-
-
-        .shop-card h2 {
-            font-size: 22px;
-            margin: 15px 0;
-            color: black;
-            font-family: 'Lobster', cursive;
-        }
-
-        .shop-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
-        }
-
     </style>
 </head>
+
 <body>
-<div class="navbar">
-    <div class="logo">
-        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="125px"
-                                             alt="Dunkin' logo"></a>
-    </div>
-        <nav>
+        <div class="navbar">
+            <div class="logo">
+            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
+            </div>
+            <nav>
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('shops') }}">Shops</a></li>
                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
                 {% if session.get('name') %}
-                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login/Register</a></li>
                 {% endif %}
             </ul>
         </nav>
-            </div>
-
-
-    <!-- where all shops can be shown (pictures came from the database)-->
-    <div class="shops">
-        <h1>Shops</h1>
-
-        <div class="shop-container">
-            {% for shop_com in shops %}
-                <a href="{{ url_for('cart') }}" class="shop-card">
-                    <img src="{{ url_for('static', filename='uploads/' ~ shop_com.shop_img) }}" alt="{{ shop_com.name }}">
-                <h2>{{ shop_com.name }}</h2>
-                </a>
-            {% endfor %}
         </div>
+
+    <div class="dunkin">
+        <h1>Cart</h1>
+
     </div>
-
-
 </body>
 </html>
