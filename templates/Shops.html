@@ -18,8 +18,6 @@
         }
 
         body {
-            font-family: 'Anton', sans-serif;
-            font-family: 'Italianno', cursive;
             font-family: 'Lobster', cursive;
             position: relative;
             display: flex;
@@ -96,23 +94,11 @@
                 margin-left: 15px;
             }
         }
+
         a {
             text-decoration: none;
             color: #ffffff;
         }
-
-        p {
-            color: #000000;
-        }
-
-
-
-        h2 {
-            color: #000000;
-            font-weight: normal;
-        }
-
-
 
         .shops {
             text-align: center;
@@ -122,8 +108,7 @@
             max-width: 1200px;
             margin: 5% auto;
             color: #000;
-}
-
+        }
 
         .shops h1 {
             color: black;
@@ -131,38 +116,6 @@
             margin-bottom: 30px;
         }
 
-        .shops p {
-            color: black;
-            font-size: 22px;
-            line-height: 1.8;
-        }
-
-        .shops b {
-            color: black;
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 5%;
-            }
-
-            nav ul li {
-                margin-left: 15px;
-            }
-
-            .shops {
-                width: 90%;
-                padding: 30px;
-            }
-
-            .shops h1 {
-                font-size: 32px;
-            }
-
-            .shops p {
-                font-size: 18px;
-            }
-        }
         .shop-container {
             display: flex;
             flex-wrap: wrap;
@@ -171,20 +124,24 @@
             margin-top: 40px;
         }
 
-
-        .shop-card {
+        .shop-card, .product-card {
             background: white;
             border-radius: 20px;
             width: 250px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
             color: black;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        .shop-card img {
+        .shop-card:hover, .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .shop-card img, .product-card img {
             width: 100%;
             height: 250px;
             object-fit: cover;
@@ -192,57 +149,100 @@
             border-top-right-radius: 20px;
         }
 
-
-        .shop-card h2 {
+        .shop-card h2, .product-card h2 {
             font-size: 22px;
             margin: 15px 0;
             color: black;
-            font-family: 'Lobster', cursive;
         }
 
-        .shop-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+        #backBtn {
+            display: none;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: #f5821f;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
+        #backBtn:hover {
+            background: #e06d12;
+        }
     </style>
 </head>
 <body>
 <div class="navbar">
     <div class="logo">
-        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="125px"
-                                             alt="Dunkin' logo"></a>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="125px" alt="Dunkin' logo"></a>
     </div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('shops') }}">Shops</a></li>
-                <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                {% if session.get('name') %}
-                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}">Login/Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-            </div>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('shops') }}">Shops</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart</a></li>
+            {% if session.get('name') %}
+                <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 
+<!-- Shop section -->
+<div class="shops">
+    <h1 id="sectionTitle">Shops</h1>
 
-    <!-- where all shops can be shown (pictures came from the database)-->
-    <div class="shops">
-        <h1>Shops</h1>
-
-        <div class="shop-container">
-            {% for shop_com in shops %}
-                <a href="{{ url_for('cart') }}" class="shop-card">
-                    <img src="{{ url_for('static', filename='uploads/' ~ shop_com.shop_img) }}" alt="{{ shop_com.name }}">
+    <!-- All Shops -->
+    <div class="shop-container" id="shopList">
+        {% for shop_com in shops %}
+            <div class="shop-card" onclick="showShop('{{ shop_com.name|lower }}')">
+                <img src="{{ url_for('static', filename='uploads/' ~ shop_com.shop_img) }}" alt="{{ shop_com.name }}">
                 <h2>{{ shop_com.name }}</h2>
-                </a>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 
+    <!-- Dunkin Products -->
+    <div class="shop-container" id="dunkinSection" style="display:none;">
+        {% for dunkin_prod in dunkin %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='uploads/' ~ dunkin_prod.dunkin_img) }}" alt="{{ dunkin_prod.name }}">
+                <h2>{{ dunkin_prod.name }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Back Button -->
+    <button id="backBtn" onclick="goBack()">Back</button>
+</div>
+
+<script>
+    function showShop(shopName) {
+        const normalized = shopName.toLowerCase();
+
+        document.getElementById('shopList').style.display = 'none';
+        document.getElementById('backBtn').style.display = 'block';
+        document.getElementById('sectionTitle').textContent =
+            shopName.charAt(0).toUpperCase() + shopName.slice(1);
+
+        // ✅ show Dunkin section if shop name includes "dunkin"
+        if (normalized.includes('dunkin')) {
+            document.getElementById('dunkinSection').style.display = 'flex';
+        }
+    }
+
+    function goBack() {
+        document.getElementById('shopList').style.display = 'flex';
+        document.getElementById('dunkinSection').style.display = 'none';
+        document.getElementById('backBtn').style.display = 'none';
+        document.getElementById('sectionTitle').textContent = 'Shops';
+    }
+</script>
 
 </body>
 </html>

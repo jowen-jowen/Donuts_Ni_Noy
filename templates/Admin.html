@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -25,17 +26,7 @@
             align-items: center;
             justify-content: flex-start;
             overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background: linear-gradient(to right, #f5821f, #FD5DA8);
-            z-index: -2;
         }
 
         body::after {
@@ -49,52 +40,41 @@
             z-index: -1;
         }
 
+        /* Navigation Bar */
         .navbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
-            padding: 20px 15%;
+            width: 100%; padding: 20px 15%;
             background: rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 10;
+            position: relative; z-index: 10;
         }
-
         nav ul {
             list-style: none;
         }
-
         nav ul li {
             display: inline-block;
             margin-left: 30px;
         }
-
         nav ul li a {
             text-decoration: none;
             color: #fff;
             font-size: 25px;
             transition: 0.3s;
         }
-
         nav ul li a:hover {
             color: #f5821f;
         }
 
+        /* Outer container for all shops */
         .shops {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
             text-align: center;
-            background: rgba(245, 130, 31, 0.9);
-            border-radius: 30px;
-            padding: 60px;
-            max-width: 700px;
-            margin: 150px auto;
-            color: #000;
         }
 
-        .shops h1 {
-            font-size: 48px;
-            margin-bottom: 30px;
-        }
-
+        /* Buttons */
         button {
             background-color: #fff;
             color: #000;
@@ -103,20 +83,22 @@
             border-radius: 10px;
             cursor: pointer;
             margin: 5px;
+            transition: 0.3s;
+        }
+        button:hover {
+            opacity: 0.85;
         }
 
+        /* Forms */
         form {
-            display: none;
             margin-top: 20px;
             text-align: left;
         }
-
         form label {
             font-size: 18px;
             color: #000;
         }
-
-        form input[type="text"], form input[type="file"] {
+        form input[type="text"], form input[type="file"], form select {
             padding: 10px;
             border-radius: 10px;
             width: 100%;
@@ -124,106 +106,27 @@
             margin-bottom: 15px;
             border: 1px solid #ccc;
         }
+        form button { background-color: #000;
+            color: #fff; }
 
-        form button {
-            background-color: #000;
-            color: #fff;
-        }
-
-        .image-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
+        /* Wrapper for each shop + products */
+        .shop-wrapper {
+            background: #f5821f;
+            padding: 30px;
+            border-radius: 20px;
             margin-bottom: 50px;
         }
 
-        .image-card {
-            text-align: center;
-        }
-
-        .image-card img {
-            border-radius: 10px;
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        h2 {
-            color: #000;
-            margin-top: 40px;
-        }
-
-        .shops {
-            text-align: center;
-            background: rgba(245, 130, 31, 0.9);
-            border-radius: 30px;
-            padding: 60px;
-            max-width: 1200px;
-            margin: 5% auto;
-            color: #000;
-}
-
-
-        .shops h1 {
-            color: black;
-            font-size: 48px;
-            margin-bottom: 30px;
-        }
-
-        .shops p {
-            color: black;
-            font-size: 22px;
-            line-height: 1.8;
-        }
-
-        .shops b {
-            color: black;
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 5%;
-            }
-
-            nav ul li {
-                margin-left: 15px;
-            }
-
-            .shops {
-                width: 90%;
-                padding: 30px;
-            }
-
-            .shops h1 {
-                font-size: 32px;
-            }
-
-            .shops p {
-                font-size: 18px;
-            }
-        }
-        .shop-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 40px;
-        }
-
-
+        /* Shop card */
         .shop-card {
+            text-align: center;
             background: white;
             border-radius: 20px;
             width: 250px;
-            text-align: center;
+            margin: 0 auto 20px;
+            padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            color: black;
-            overflow: hidden;
         }
-
         .shop-card img {
             width: 100%;
             height: 250px;
@@ -231,8 +134,6 @@
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
         }
-
-
         .shop-card h2 {
             font-size: 22px;
             margin: 15px 0;
@@ -240,46 +141,102 @@
             font-family: 'Lobster', cursive;
         }
 
-        .shop-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+
+        /* Products container (below each shop) */
+        .products-container {
+            margin-top: 30px;
+        }
+        .products-container h3 {
+            margin-bottom: 20px;
+            color: #000;
         }
 
+        /* Grid layout for products */
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Product cards */
+        .product-card {
+            width: 180px;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .product-card h4 {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        /* Remove button */
         .remove-form {
-            display: block; /* ensure remove button form is visible */
+            display: block;
             margin-top: 10px;
             text-align: center;
         }
 
+        /* Add product button */
+        .add-product-form button {
+            background-color: #4CAF50;
+            color: white;
+        }
 
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 5%;
+            }
+            nav ul li {
+                margin-left: 15px;
+            }
+            .shops {
+                width: 90%; padding: 30px;
+            }
+            .shop-card {
+                width: 100%; max-width: 300px;
+            }
+            .product-card {
+                width: 45%; max-width: 180px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">
-            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="125px" alt="Dunkin' logo"></a>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('shops') }}">Shops</a></li>
-                <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                {% if session.get('name') %}
-                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}">Login/Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+<div class="navbar">
+    <div class="logo">
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" width="125px" alt="Dunkin' logo"></a>
     </div>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('shops') }}">Shops</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart</a></li>
+            {% if session.get('name') %}
+                <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 
-    <div class="shops">
+<div class="shops">
+    <!-- Admin Dashboard - Add Shops Form -->
+    <div class="shop-wrapper">
         <h1>Admin Dashboard</h1>
-
-        <!-- Buttons -->
         <button id="toggleShopForm">➕ Add Shops</button>
-        <button id="toggleProductForm">➕ Add Shop Products</button>
 
         <!-- Add Shop Form -->
         <form id="shopForm" action="{{ url_for('upload_shops') }}" method="POST" enctype="multipart/form-data">
@@ -291,75 +248,92 @@
 
             <button type="submit">Upload Shop</button>
         </form>
-
-        <!-- Add Product Form -->
-        <form id="productForm" action="{{ url_for('upload_img') }}" method="POST" enctype="multipart/form-data">
-            <label for="image_name">Product Name:</label><br>
-            <input type="text" name="image_name" placeholder="Enter product name" required><br>
-
-            <label for="images">Select Product Images:</label><br>
-            <input type="file" name="images" multiple accept="image/*" required><br>
-
-            <button type="submit">Upload Product</button>
-        </form>
     </div>
 
+    <!-- Display each shop and its products -->
+    {% for shop in shops %}
+        <div class="shop-wrapper">
+            <!-- Inside each shop-wrapper / shop-card -->
+            <div class="shop-card">
+                <img src="{{ url_for('static', filename='uploads/' ~ shop.shop_img) }}" alt="{{ shop.name }}">
+                <h2>{{ shop.name }}</h2>
+
+                <!-- Remove Shop Button -->
+                <form class="remove-form" action="{{ url_for('remove_shop', shop_name=shop.name) }}" method="POST">
+                    <button type="submit" style="background-color:red;color:white;">Remove Shop</button>
+                </form>
+
+                <!-- Add Product Toggle Button -->
+                <button type="button" class="toggle-add-product-btn" style="background-color:#4CAF50;color:white;">
+                    ➕ Add Product
+                </button>
+
+                <!-- Add Product Form (hidden by default) -->
+                <form class="add-product-form" action="{{ url_for('upload_img') }}" method="POST"
+                      enctype="multipart/form-data" style="display:none; margin-top: 15px;">
+                    <label for="image_name">Product Name:</label><br>
+                    <input type="text" name="image_name" placeholder="Enter product name" required><br>
+
+                    <label for="price">Price:</label><br>
+                    <input type="text" name="price" placeholder="Enter product price" required><br>
+
+                    <!-- Shop is pre-selected using a hidden input -->
+                    <input type="hidden" name="shop_table" value="{{ shop.name|replace(' ', '_')|lower }}">
+
+                    <label for="images">Select Product Images:</label><br>
+                    <input type="file" name="images" multiple accept="image/*" required><br>
+
+                    <button type="submit" style="background-color:#4CAF50;color:white;">Upload Product</button>
+                </form>
 
 
-    <div class="shops">
-        <h1>Shops</h1>
+            </div>
 
-        <div class="shop-container">
-            {% for shop_com in shops %}
-                <div class="shop-card">
-                    <img src="{{ url_for('static', filename='uploads/' ~ shop_com.shop_img) }}"
-                         alt="{{ shop_com.name }}">
-                    <h2>{{ shop_com.name }}</h2>
-
-                    <!-- Remove button -->
-                    <form class="remove-form" action="{{ url_for('remove_shop', shop_name=shop_com.name) }}"
-                          method="POST" style="margin-bottom: 10px;">
-                        <button type="submit"
-                                style="background-color: red; color: white; border-radius: 5px; padding: 5px 10px; border: none; cursor: pointer;">
-                            Remove
-                        </button>
-                    </form>
-
+            <div class="products-container">
+                <h3>Products for {{ shop.name }}</h3>
+                <div class="product-grid">
+                    {% for product in products_by_shop.get(shop.name, []) %}
+                        <div class="product-card">
+                            <img src="{{ url_for('static', filename='uploads/' + product.product_img) }}"
+                                 alt="{{ product.name }}">
+                            <h4>{{ product.name }}</h4>
+                            <p>₱{{ product.price }}</p>  <!-- show price -->
+                            <form class="remove-form"
+                                  action="{{ url_for('remove_product', shop_table=shop.name|replace(' ', '_')|lower, product_name=product.name) }}"
+                                  method="POST">
+                                <button type="submit" style="background-color:red;color:white;">Remove</button>
+                            </form>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
+    {% endfor %}
+</div>
 
+<script>
+    const shopBtn = document.getElementById('toggleShopForm');
+    const shopForm = document.getElementById('shopForm');
 
-    <!-- for testing if the images are being uploaded into the database table-->
-    <!-- for products onlY-->
-        <h2>Uploaded Products</h2>
-        <div class="image-grid">
-            {% for img in images %}
-                <div class="image-card">
-                    <img src="{{ url_for('static', filename='uploads/' + img.dunkin_img) }}" alt="{{ img.name }}">
-                    <p>{{ img.name }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+    shopBtn.addEventListener('click', () => {
+        shopForm.style.display = shopForm.style.display === 'none' ? 'block' : 'none';
+    });
+    // Toggle the Add Product form per shop
+    const toggleButtons = document.querySelectorAll('.toggle-add-product-btn');
 
-    <script>
-        const shopBtn = document.getElementById('toggleShopForm');
-        const shopForm = document.getElementById('shopForm');
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const form = btn.nextElementSibling; // the form right after the button
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
 
-
-        const productBtn = document.getElementById('toggleProductForm');
-        const productForm = document.getElementById('productForm');
-
-        shopBtn.addEventListener('click', () => {
-            productForm.style.display = 'none';
-            shopForm.style.display = shopForm.style.display === 'none' ? 'block' : 'none';
+            // Optional: scroll into view
+            if (form.style.display === 'block') {
+                form.scrollIntoView({ behavior: 'smooth' });
+            }
         });
+    });
 
-        productBtn.addEventListener('click', () => {
-            shopForm.style.display = 'none';
-            productForm.style.display = productForm.style.display === 'none' ? 'block' : 'none';
-        });
-    </script>
+
+</script>
 </body>
 </html>
