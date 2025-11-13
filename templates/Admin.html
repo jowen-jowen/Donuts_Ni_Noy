@@ -264,7 +264,7 @@
                 </form>
 
                 <!-- Add Product Toggle Button -->
-                <button type="button" class="toggle-add-product-btn" style="background-color:#4CAF50;color:white;">
+                <button type="button" class="add_product_btn" style="background-color:#4CAF50;color:white;">
                     ➕ Add Product
                 </button>
 
@@ -319,7 +319,7 @@
         shopForm.style.display = shopForm.style.display === 'none' ? 'block' : 'none';
     });
     // Toggle the Add Product form per shop
-    const toggleButtons = document.querySelectorAll('.toggle-add-product-btn');
+    const toggleButtons = document.querySelectorAll('.add_product_btn');
 
     toggleButtons.forEach(btn => {
         btn.addEventListener('click', () => {

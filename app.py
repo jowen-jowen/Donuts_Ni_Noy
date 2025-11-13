@@ -367,7 +367,7 @@ def login():
 @app.route('/logged')
 def logged():
     name = session.get('name', 'Guest')
-    return render_template('Success.html', name=name)
+    return render_template('Home.html', name=name)
 
 @app.route('/dunkin')
 def dunkin():

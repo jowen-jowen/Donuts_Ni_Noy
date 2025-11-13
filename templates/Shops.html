@@ -227,13 +227,7 @@
 
         document.getElementById('shopList').style.display = 'none';
         document.getElementById('backBtn').style.display = 'block';
-        document.getElementById('sectionTitle').textContent =
-            shopName.charAt(0).toUpperCase() + shopName.slice(1);
-
-        // ✅ show Dunkin section if shop name includes "dunkin"
-        if (normalized.includes('dunkin')) {
-            document.getElementById('dunkinSection').style.display = 'flex';
-        }
+        document.getElementById('sectionTitle').textContent = shopName.charAt(0).toUpperCase() + shopName.slice(1);
     }
 
     function goBack() {
