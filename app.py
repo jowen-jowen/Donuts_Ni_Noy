@@ -155,17 +155,147 @@ def remove_product(shop_table, product_name):
 def home():
     return render_template('Home.html')
 
-#----------------------------------------------------------------------------------------------------------------------- about Route
 
-@app.route('/about')
-def about():
-    return render_template('About.html')
+
 
 #----------------------------------------------------------------------------------------------------------------------- cart Route
 
-@app.route('/cart')
+@app.route("/cart")
 def cart():
-    return render_template('Cart.html')
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM cart WHERE user_id=%s", (session['user_id'],))
+    cart_rows = cursor.fetchall()
+
+    cart_items = []
+    total_price = 0
+
+    for row in cart_rows:
+        table = sanitize_table_name(row['shop_table'])
+        product_id = row['product_id']
+
+        # Get product info from the shop-specific table
+        cursor.execute(f"SELECT name, price, product_img FROM `{table}` WHERE id=%s", (product_id,))
+        product = cursor.fetchone()
+
+        if product:
+            subtotal = product['price'] * row['quantity']
+            total_price += subtotal
+            cart_items.append({
+                "product_name": product['name'],
+                "price": product['price'],
+                "product_img": product['product_img'],
+                "quantity": row['quantity']
+            })
+
+    cursor.close()
+    conn.close()
+
+    return render_template("cart.html", cart_items=cart_items, total_price=total_price)
+
+#----------------------------------------------------------------------------------------------------------------------- update_quantity Route
+@app.route('/update_quantity', methods=['POST'])
+def update_quantity():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    product_id = request.form['product_id']
+    action = request.form['action']
+
+    if action == "increase":
+        cursor.execute("UPDATE cart SET quantity = quantity + 1 WHERE user_id=%s AND product_id=%s",
+                       (session['user_id'], product_id))
+    else:
+        cursor.execute("UPDATE cart SET quantity = GREATEST(quantity - 1, 1) WHERE user_id=%s AND product_id=%s",
+                       (session['user_id'], product_id))
+
+    conn.commit()
+    return redirect(url_for('cart'))
+
+#----------------------------------------------------------------------------------------------------------------------- remove_cart_item Route
+@app.route('/remove_cart_item', methods=['POST'])
+def remove_cart_item():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    product_id = request.form['product_id']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM cart WHERE user_id=%s AND product_id=%s",
+                   (session['user_id'], product_id))
+    conn.commit()
+
+    return redirect(url_for('cart'))
+
+#----------------------------------------------------------------------------------------------------------------------- add_to_cart Route
+@app.route("/add_to_cart", methods=["POST"])
+def add_to_cart():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    product_id = request.form.get("product_id")
+    shop_table = request.form.get("shop_table")
+    quantity = int(request.form.get("quantity"))
+
+    if not product_id or not shop_table:
+        return "Missing product or shop information", 400
+
+    shop_table = sanitize_table_name(shop_table)
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Check if item already exists in cart for this user + shop
+    cursor.execute(
+        "SELECT * FROM cart WHERE user_id=%s AND product_id=%s AND shop_table=%s",
+        (session['user_id'], product_id, shop_table)
+    )
+    existing = cursor.fetchone()
+
+    if existing:
+        # Update quantity
+        cursor.execute(
+            "UPDATE cart SET quantity = quantity + %s WHERE cart_id=%s",
+            (quantity, existing['cart_id'])
+        )
+    else:
+        # Insert new cart item
+        cursor.execute(
+            "INSERT INTO cart (user_id, product_id, shop_table, quantity) VALUES (%s, %s, %s, %s)",
+            (session['user_id'], product_id, shop_table, quantity)
+        )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for("cart"))
+
+
+
+#----------------------------------------------------------------------------------------------------------------------- shop_products Route
+
+@app.route('/shops/<shop_name>')
+def shop_products(shop_name):
+    table_name = sanitize_table_name(shop_name)
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Fetch products of the selected shop
+    cursor.execute(f"SELECT * FROM `{table_name}`")
+    products = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('Shops.html', products=products, shop_name=shop_name)
 
 
 #----------------------------------------------------------------------------------------------------------------------- shops Route = Retrieving Images from shop table to Shop Page
@@ -348,6 +478,7 @@ def login():
         if user:
             if check_password_hash(user['password'], password):
                 session['name'] = user['name']
+                session['user_id'] = user['id']
                 user_type = user.get('user_type', 'user')
 
                 # redirect based on user_type

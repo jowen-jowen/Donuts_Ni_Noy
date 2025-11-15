@@ -2,187 +2,295 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Contact</title>
+    <title>Cart</title>
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Anton', sans-serif;
-            font-family: 'Italianno', cursive;
             font-family: 'Lobster', cursive;
-            position: relative;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: flex-start;
             overflow-x: hidden;
         }
+
         body::before {
             content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             background: linear-gradient(to right, #f5821f, #FD5DA8);
             z-index: -2;
         }
 
         body::after {
             content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.25); /* soft fade effect */
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.25);
             z-index: -1;
         }
 
-        .logo img {
-            width: 125px;
-        }
-
-        /* navigation bar*/
-
+        /* NAVBAR */
         .navbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            padding: 20px 15%; /* same as Login/Register */
-            background: rgba(0, 0, 0, 0.5); /* semi-transparent */
-            position: relative;
-            z-index: 10;
+            padding: 20px 15%;
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .logo img {
             width: 125px;
         }
 
-        nav {
-            flex: 1;
-            text-align: right;
-        }
-
         nav ul {
             list-style: none;
         }
-
         nav ul li {
             display: inline-block;
-            margin-left: 30px; /* spacing between links */
+            margin-left: 30px;
         }
-
         nav ul li a {
             text-decoration: none;
-            color: #ffffff;
+            color: #fff;
             font-size: 25px;
-            transition: 0.3s;
         }
-
         nav ul li a:hover {
             color: #f5821f;
         }
 
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 5%;
-            }
-            nav ul li {
-                margin-left: 15px;
-            }
-        }
-
-
-
-        .cart {
-            text-align: center;
-            background: rgba(245, 130, 31, 0.9);
+        .cart-wrapper {
+            background: #d88336;
             border-radius: 30px;
-            padding: 60px;
-            max-width: 700px;
-            margin: 150px auto;
-            color: #000;
+            padding: 40px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 80px auto;
+            display: flex;
+            gap: 40px;
         }
 
-        .cart h1 {
-            color: black;
-            font-size: 48px;
+        .left-cart {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .cart-box {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .food-img img {
+            width: 160px;
+            height: 160px;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        .food-info-horizontal {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            font-size: 24px;
+            flex: 1;
+        }
+
+        .qty-input {
+            width: 55px;
+            padding: 5px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            text-align: center;
+        }
+
+        .remove-btn {
+            background: #ff403f;
+            color: white;
+            font-size: 20px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .order-summary {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+        }
+
+        .order-summary h2 {
+            font-size: 38px;
             margin-bottom: 30px;
+            text-align: center;
         }
 
-        .cart p {
-            color: black;
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
             font-size: 22px;
-            line-height: 1.8;
+            margin-bottom: 15px;
+            padding: 0 10px;
         }
 
-        .cart b {
-            color: black;
+        .divider {
+            height: 2px;
+            background: black;
+            border: none;
+            margin: 20px 0;
         }
 
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 5%;
-            }
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 28px;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
 
-            nav ul li {
-                margin-left: 15px;
-            }
-
-            .cart {
-                width: 90%;
-                padding: 30px;
-            }
-
-            .cart h1 {
-                font-size: 32px;
-            }
-
-            .cart p {
-                font-size: 18px;
-            }
+        .checkout-btn {
+            background: #fcb64d;
+            padding: 20px 40px;
+            font-size: 26px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
 
 <body>
 
+<div class="navbar">
+    <div class="logo">
+        <a href="/"><img src="{{ url_for('static', filename='logo.png') }}"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('shops') }}">Shops</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart</a></li>
+            {% if session.get('name') %}
+                <li style="color:white; font-size:22px;">Hello! {{ session['name'] }}</li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
 
-        <div class="navbar">
-            <div class="logo">
-            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
+<div class="cart-wrapper">
+
+    <div class="left-cart">
+        {% if cart_items %}
+            {% for item in cart_items %}
+                <div class="cart-box">
+
+                    <div class="food-img">
+                        <img src="{{ url_for('static', filename='uploads/' ~ item.product_img) }}">
+                    </div>
+
+                    <div class="food-info-horizontal">
+                        <span><b>Name:</b> {{ item.product_name }}</span>
+                        <span><b>Price:</b> ₱{{ item.price }}</span>
+
+                        <span><b>Quantity:</b>
+                            <input type="number" class="qty-input"
+                                data-id="{{ item.product_id }}"
+                                data-price="{{ item.price }}"
+                                min="1" max="10"
+                                value="{{ item.quantity }}">
+                        </span>
+                    </div>
+
+                    <form action="{{ url_for('remove_cart_item') }}" method="POST">
+                        <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                        <button class="remove-btn">Remove</button>
+                    </form>
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="font-size: 26px;">Your cart is empty!</p>
+        {% endif %}
+    </div>
+
+    {% if cart_items %}
+    <div class="order-summary">
+
+        <h2>Order Summary</h2>
+
+        {% for item in cart_items %}
+            <div class="summary-row" id="summary-{{ item.product_id }}">
+                <span>{{ item.product_name }}</span>
+                <span>Qty: <span class="summary-qty">{{ item.quantity }}</span></span>
+                <span>₱<span class="item-total">{{ item.price * item.quantity }}</span></span>
             </div>
-            <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('shops') }}">Shops</a></li>
-                <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                {% if session.get('name') %}
-                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}">Login/Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        {% endfor %}
+
+        <hr class="divider">
+
+        <div class="summary-total" id="grand-total">
+            <span><b>Total:</b></span>
+            <span><b>₱{{ total_price }}</b></span>
         </div>
 
-    <div class="cart">
-        <h1>Cart</h1>
+        <button class="checkout-btn">Check-out Button</button>
 
     </div>
+    {% endif %}
+
+</div>
+
+<script>
+document.querySelectorAll(".qty-input").forEach(input => {
+    input.addEventListener("change", function () {
+
+        let newQty = parseInt(this.value);
+
+        if (newQty < 1) newQty = 1;
+        if (newQty > 10) newQty = 10;
+
+        this.value = newQty;
+
+        const price = parseFloat(this.dataset.price);
+        const id = this.dataset.id;
+
+        const summaryRow = document.getElementById("summary-" + id);
+
+        summaryRow.querySelector(".summary-qty").textContent = newQty;
+
+        const newTotal = price * newQty;
+        summaryRow.querySelector(".item-total").textContent = newTotal.toFixed(2);
+
+        let grandTotal = 0;
+        document.querySelectorAll(".item-total").forEach(el => {
+            grandTotal += parseFloat(el.textContent);
+        });
+
+        document.querySelector("#grand-total span:last-child").textContent =
+            "₱" + grandTotal.toFixed(2);
+    });
+});
+</script>
+
 </body>
 </html>
