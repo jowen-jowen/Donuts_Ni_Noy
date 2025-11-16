@@ -256,6 +256,7 @@ def add_to_cart():
         return "Missing product or shop information", 400
 
     shop_table = sanitize_table_name(shop_table)
+    user_name = session.get('name', 'Guest')
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -276,8 +277,8 @@ def add_to_cart():
     else:
         # Insert new cart item
         cursor.execute(
-            "INSERT INTO cart (user_id, product_id, shop_table, quantity) VALUES (%s, %s, %s, %s)",
-            (session['user_id'], product_id, shop_table, quantity)
+            "INSERT INTO cart (user_id, name, product_id, shop_table, quantity) VALUES (%s, %s, %s, %s ,%s)",
+            (session['user_id'], user_name, product_id, shop_table, quantity)
         )
 
     conn.commit()
@@ -488,10 +489,11 @@ def login():
             if check_password_hash(user['password'], password):
                 session['name'] = user['name']
                 session['user_id'] = user['id']
-                user_type = user.get('user_type', 'user')
+                session['user_type'] = user.get('user_type', 'user')
+
 
                 # redirect based on user_type
-                if user_type == 'admin':
+                if session['user_type'] == 'admin':
                     return redirect(url_for('admin'))
                 else:
                     return redirect(url_for('logged'))
