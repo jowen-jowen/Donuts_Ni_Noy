@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Dunkin' Donut</title>
+    <title>Reset Password</title>
+
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap"
@@ -105,82 +107,84 @@
             }
         }
 
-
-
-        .dunkin {
+        .container {
+            margin-top: 100px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 35px 45px;
+            border-radius: 15px;
             text-align: center;
-            background: rgba(245, 130, 31, 0.9);
-            border-radius: 30px;
-            padding: 60px;
-            max-width: 700px;
-            margin: 150px auto;
-            color: #000;
+            width: 450px;
+            backdrop-filter: blur(8px);
         }
 
-        .dunkin h1 {
-            color: black;
-            font-size: 48px;
-            margin-bottom: 30px;
+        .container h2 {
+            font-size: 45px;
+            color: #000000;
+            margin-bottom: 10px;
         }
 
-        .dunkin p {
-            color: black;
+        .container p {
+            font-size: 20px;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
             font-size: 22px;
-            line-height: 1.8;
+            background: #FD5DA8;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
         }
 
-        .dunkin b {
-            color: black;
+        .submit-btn:hover {
+            background: #f5821f;
         }
 
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 5%;
-            }
 
-            nav ul li {
-                margin-left: 15px;
-            }
 
-            .dunkin {
-                width: 90%;
-                padding: 30px;
-            }
-
-            .dunkin h1 {
-                font-size: 32px;
-            }
-
-            .dunkin p {
-                font-size: 18px;
-            }
-        }
     </style>
 </head>
-
 <body>
+
+
         <div class="navbar">
             <div class="logo">
-            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
+            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" alt="Dunkin' Logo"></a>
             </div>
             <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('shops') }}">Shops</a></li>
-                <li><a href="{{ url_for('cart') }}">Cart</a></li>
-                {% if session.get('name') %}
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                    <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                {% else %}
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('shops') }}">Shops</a></li>
+                    <li><a href="{{ url_for('cart') }}">Cart</a></li>
                     <li><a href="{{ url_for('login') }}">Login/Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+                    </ul>
+            </nav>
         </div>
 
-    <div class="dunkin">
-        <h1>Cart</h1>
+        <div class="container">
+            <h1>Reset your password</h1>
+            <br><br>
+            <form action="{{ url_for('reset_password') }}" method="POST">
+                <input type="password" class="input-field" name="new_password" placeholder="New Password" required>
+                <button type="submit" class="submit-btn">Update Password</button>
+            </form>
+        </div>
 
-    </div>
+
 </body>
 </html>

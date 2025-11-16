@@ -150,7 +150,7 @@ def remove_product(shop_table, product_name):
     conn.close()
     return redirect(url_for('admin'))
 
-#----------------------------------------------------------------------------------------------------------------------- home Route
+#----------------------------------------------------------------------------------------------------------------------- home Route = Landing Page
 @app.route('/')
 def home():
     return render_template('Home.html')
@@ -509,9 +509,88 @@ def logged():
     name = session.get('name', 'Guest')
     return render_template('Home.html', name=name)
 
-@app.route('/dunkin')
-def dunkin():
-    return render_template('Dunkin.html')
+
+#----------------------------------------------------------------------------------------------------------------------- forgot_pass Route
+# Forgot Password
+@app.route('/forgot_pass', methods=['GET', 'POST'])
+def forgot_pass():
+    if request.method == 'POST':
+        email = request.form['email'].strip()
+
+        # check if email exists in DB
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if not user:
+            return render_template('ForgotPass.html',
+                error="Email not found")
+
+        # store email temporarily
+        session['reset_email'] = email
+
+        # generate OTP
+        otp = random.randint(100000, 999999)
+        session['reset_otp'] = str(otp)
+
+        # send OTP email
+        try:
+            sender = "japquinones1977@gmail.com"
+            app_password = "vtwk zbdv ulxe bzpm"
+
+            msg = MIMEText(f"Your password reset OTP is: {otp}")
+            msg['Subject'] = "Password Reset OTP"
+            msg['From'] = "Dunkin Ni Noy"
+            msg['To'] = email
+
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.starttls()
+                server.login(sender, app_password)
+                server.sendmail(sender, email, msg.as_string())
+
+            return render_template("OTPForgot.html", email=email)
+
+        except Exception as e:
+            return f"Error sending email: {e}"
+
+    return render_template('ForgotPass.html')
+
+#----------------------------------------------------------------------------------------------------------------------- verify_forgot_otp Route
+@app.route('/verify_forgot_otp', methods=['POST'])
+def verify_forgot_otp():
+    entered_otp = request.form['otp'].strip()
+
+    if entered_otp == session.get('reset_otp'):
+        return render_template('ResetPass.html')
+    else:
+        return render_template('OTPForgot.html',
+                               error="Invalid OTP. Please try again.",
+                               email=session.get('reset_email'))
+
+#----------------------------------------------------------------------------------------------------------------------- reset_password Route
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    new_password = request.form['new_password'].strip()
+    email = session.get('reset_email')
+
+    hashed_password = generate_password_hash(new_password)
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET password=%s WHERE email=%s",
+                   (hashed_password, email))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # clear temporary session data
+    for key in ['reset_email', 'reset_otp']:
+        session.pop(key, None)
+
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

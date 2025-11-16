@@ -224,7 +224,7 @@
             <li><a href="{{ url_for('cart') }}">Cart</a></li>
             {% if session.get('name') %}
                 <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login/Register</a></li>
             {% endif %}
@@ -318,7 +318,7 @@
                     }
                 })
                 .catch(() => {
-                    showPopup("Error adding to cart!", true);
+                    showPopup("Login first before adding", true);
                 });
         });
     });

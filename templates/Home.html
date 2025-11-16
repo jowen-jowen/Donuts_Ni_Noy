@@ -130,46 +130,6 @@
             border-radius: 5px;
         }
 
-        .section {
-            background: rgba(245, 130, 31, 0.85);
-            border-radius: 30px;
-            padding: 40px;
-            margin: 80px auto;
-            max-width: 1100px;
-        }
-
-        .title {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #fff;
-            font-size: 36px;
-            font-weight: bold;
-            position: relative;
-        }
-
-        .title::after {
-            content: '';
-            background: #fff;
-            width: 80px;
-            height: 5px;
-            border-radius: 5px;
-            display: block;
-            margin: 10px auto;
-        }
-
-        .front {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-
-        .col-4, .col-5 {
-            flex: 1 1 300px;
-            max-width: 400px;
-            text-align: center;
-        }
-
         .col-4 img, .col-5 img {
             width: 100%;
             border-radius: 20px;
@@ -209,7 +169,7 @@
                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
                 {% if session.get('name') %}
                     <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a></li>
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login/Register</a></li>
                 {% endif %}
@@ -227,47 +187,7 @@
             <img src="{{ url_for('static', filename='background.jpg') }}" alt="Donuts">
         </div>
     </section>
-    <br><br>
-
-    <div class="section">
-        <h1 class="title">Limited Time Only</h1>
-        <div class="front">
-            <div class="col-4">
-                <img src="{{ url_for('static', filename='promo1.jpg') }}" alt="">
-                <h2>SB19 Dunkin' Flask</h2>
-                <p>(Sold Out)</p>
-            </div>
-            <div class="col-4">
-                <img src="{{ url_for('static', filename='promo2.jpg') }}" alt="">
-                <h2>Dunkin' Drip Coffee</h2>
-                <p>(Available)</p>
-            </div>
-        </div>
-    </div>
-
-    <br><br><br><br>
 
 
-    <div class="section">
-        <h1 class="title">Bundles</h1>
-        <div class="front">
-            <div class="col-5">
-                <img src="{{ url_for('static', filename='bundle1.jpg') }}" alt="">
-                <h2>Dozen Premium Donuts</h2>
-                <p>(Available)</p>
-            </div>
-            <div class="col-5">
-                <img src="{{ url_for('static', filename='bundle2.jpg') }}" alt="">
-                <h2>Pasalubong</h2>
-                <p>(Available)</p>
-            </div>
-            <div class="col-5">
-                <img src="{{ url_for('static', filename='bundle3.jpg') }}" alt="">
-                <h2>Super Barkada Bundle</h2>
-                <p>(Available)</p>
-            </div>
-        </div>
-    </div>
-<br><br><br><br>
 </body>
 </html>

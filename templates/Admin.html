@@ -224,7 +224,7 @@
             <li><a href="{{ url_for('cart') }}">Cart</a></li>
             {% if session.get('name') %}
                 <li style="color: #ffffff; font-size: 22px;">Hello! {{ session['name'] }}</li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login/Register</a></li>
             {% endif %}
@@ -259,7 +259,10 @@
                 <h2>{{ shop.name }}</h2>
 
                 <!-- Remove Shop Button -->
-                <form class="remove-form" action="{{ url_for('remove_shop', shop_name=shop.name) }}" method="POST">
+                <form class="remove-form"
+                      action="{{ url_for('remove_shop', shop_name=shop.name) }}"
+                      method="POST"
+                      onsubmit="return confirm('Are you sure you want to remove this shop? This will delete all its products!')">
                     <button type="submit" style="background-color:red;color:white;">Remove Shop</button>
                 </form>
 
@@ -297,11 +300,14 @@
                             <img src="{{ url_for('static', filename='uploads/' + product.product_img) }}"
                                  alt="{{ product.name }}">
                             <h4>{{ product.name }}</h4>
-                            <p>₱{{ product.price }}</p>  <!-- show price -->
+                            <p>₱{{ product.price }}</p>
+
+                            <!--remove products -->
                             <form class="remove-form"
-                                  action="{{ url_for('remove_product', shop_table=shop.name|replace(' ', '_')|lower, product_name=product.name) }}"
-                                  method="POST">
-                                <button type="submit" style="background-color:red;color:white;">Remove</button>
+                                  action="{{ url_for('remove_product', shop_table=shop.name, product_name=product.name) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Are you sure you want to remove this Product?')">
+                                <button type="submit" style="background-color:red;color:white;">Remove Product</button>
                             </form>
                         </div>
                     {% endfor %}
