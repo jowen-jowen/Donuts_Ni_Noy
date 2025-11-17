@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <title>Login | Register</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='LogReg.css') }}">
-    <script src="{{ url_for('static', filename='LogReg.js') }}"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 
 <body>
 
@@ -69,17 +66,30 @@
                 <div class="toggle-panel toggle-left">
                     <h1>Excited to become one of the Noy?</h1>
                     <p>Register now to be a part of the Noy Community</p>
-                    <button class="hidden" id="login">Sign In</button>
+                    <button class="hidden" id="login" type="button">Sign In</button>
 
                 </div>
                 <div class="toggle-panel toggle-right">
                     <h1>Welcome to <br> Donut ni Noy!</h1>
                     <p>Enter your personal account to Order Now!</p>
-                    <button class="hidden" id="register">Sign Up</button>
+                    <button class="hidden" id="register" type="button">Sign Up</button>
                 </div>
             </div>
         </div>
     </div>
 
+<script>
+    const container = document.getElementById('container');
+    const registerBtn = document.getElementById('register');
+    const loginBtn = document.getElementById('login');
+
+    registerBtn.addEventListener('click', () => {
+        container.classList.add("active");
+    });
+
+    loginBtn.addEventListener('click', () => {
+        container.classList.remove("active");
+    });
+</script>
 </body>
 </html>

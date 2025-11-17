@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Shops</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Shops.css') }}">
-    <script src="{{ url_for('static', filename='Shops.js') }}"></script>
+
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +60,7 @@
                     <h2>{{ item.name }}</h2>
                     <p>₱{{ item.price }}</p>
 
-                    <form action="{{ url_for('add_to_cart') }}" method="POST" class="cart-form ajax-add">
+                    <form action="{{ url_for('add_to_cart') }}" method="POST" class="cart-form">
                         <input type="hidden" name="product_id" value="{{ item.id }}">
                         <input type="hidden" name="shop_table" value="{{ shop_name }}">
 
@@ -85,6 +85,54 @@
         <button id="backBtn" onclick="window.location.href='{{ url_for('shops') }}'">Go Back</button>
     {% endif %}
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const forms = document.querySelectorAll(".cart-form");
+
+    forms.forEach(form => {
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            fetch("{{ url_for('add_to_cart') }}", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                showMessage("Added to cart!");
+            })
+            .catch(() => showMessage("Error occurred", true));
+        });
+    });
+});
+
+function showMessage(text, error = false) {
+    const box = document.createElement("div");
+    box.textContent = text;
+
+    box.style.position = "fixed";
+    box.style.top = "20px";
+    box.style.right = "20px";
+    box.style.background = error ? "#ff4d4d" : "#4CAF50";
+    box.style.color = "white";
+    box.style.padding = "15px 25px";
+    box.style.borderRadius = "8px";
+    box.style.zIndex = "10000";
+
+    document.body.appendChild(box);
+
+    setTimeout(() => {
+        box.style.opacity = "0";
+        box.style.transition = "opacity 0.5s";
+        setTimeout(() => box.remove(), 500);
+    }, 1200);
+}
+</script>
+
+
 
 </body>
 </html>

@@ -400,7 +400,7 @@ def confirm_order():
 
     # Inserting order into DB
     cursor.execute("""
-        INSERT INTO orders (user_id, username, products, total_price,fullname, phone, address, payment_method, notes)
+        INSERT INTO orders (user_id, username, products, total_price, fullname, phone, address, payment_method, notes)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, (user_id, username, products_text, total_price,fullname, phone, address, payment, notes))
 
