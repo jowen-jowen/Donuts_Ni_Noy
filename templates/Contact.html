@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Contact Us</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Contact.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+        <div class="navbar">
+            <div class="logo">
+            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='logo.png') }}" alt="Dunkin' Logo"></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('shops') }}">Shops</a></li>
+                    <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+                    {% if session.get('user_id') %}
+                        {% if session.get('user_type') == 'admin' %}
+                            <li><a href="{{ url_for('admin') }}">Admin Dashboard</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a>
+                        <li style="color:#fff; font-size:22px;">Hello! {{ session.get('name', 'User') }}</li>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Login/Register</a></li>
+                    {% endif %}
+
+                    </ul>
+            </nav>
+        </div>
+
+
+        <div class="container">
+            <h1>Contact Us!</h1>
+
+            <div class="contact-item">
+                <img src="{{ url_for('static', filename='facebook.png') }}" width="100">
+                <p><b>Facebook:</b> Jhoe When Quiñones</p>
+            </div>
+
+            <div class="contact-item">
+                <img src="{{ url_for('static', filename='social.png') }}" width="110">
+                <p><b>Gmail:</b> jhoewhenquinones@gmail.com</p>
+            </div>
+
+            <div class="contact-item">
+                <img src="{{ url_for('static', filename='phone-call.png') }}" width="110">
+                <p><b>Contact No:</b> 09686932339</p>
+            </div>
+        </div>
+
+
+
+</body>
+</html>

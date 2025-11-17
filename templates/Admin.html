@@ -22,6 +22,7 @@
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('shops') }}">Shops</a></li>
             <li><a href="{{ url_for('cart') }}">Cart</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
             {% if session.get('user_id') %}
                 {% if session.get('user_type') == 'admin' %}
                     <li><a href="{{ url_for('admin') }}">Admin Dashboard</a></li>

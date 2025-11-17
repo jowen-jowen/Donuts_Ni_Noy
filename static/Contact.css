@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Anton', sans-serif;
+    font-family: 'Italianno', cursive;
+    font-family: 'Lobster', cursive;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #f5821f, #FD5DA8);
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25); /* soft fade effect */
+    z-index: -1;
+}
+
+.logo img {
+    width: 125px;
+}
+
+/* navigation bar*/
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 15%; /* same as Login/Register */
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent */
+    position: relative;
+    z-index: 10;
+}
+
+.logo img {
+    width: 125px;
+}
+
+nav {
+    flex: 1;
+    text-align: right;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-left: 30px; /* spacing between links */
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 25px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f5821f;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 15px 5%;
+    }
+
+    nav ul li {
+        margin-left: 15px;
+    }
+}
+.container {
+    margin-top: 100px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 35px 45px;
+    border-radius: 15px;
+    text-align: center;
+    width: 1000px;
+    height: auto;
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.contact-item p {
+    font-size: 40px;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contact-item p {
+        font-size: 32px;
+    }
+}
