@@ -62,7 +62,7 @@ nav ul li a:hover {
 /* Outer container for all shops */
 .shops {
     max-width: 1200px;
-    margin: 50px auto;
+    margin: auto;
     padding: 20px;
     text-align: center;
 }
@@ -85,7 +85,6 @@ button:hover {
 
 /* Forms */
 form {
-    margin-top: 20px;
     text-align: left;
 }
 
@@ -143,7 +142,6 @@ form button {
 }
 
 
-/* Products container (below each shop) */
 .products-container {
     margin-top: 30px;
 }
@@ -153,7 +151,6 @@ form button {
     color: #000;
 }
 
-/* Grid layout for products */
 .product-grid {
     display: flex;
     flex-wrap: wrap;
@@ -161,7 +158,6 @@ form button {
     gap: 20px;
 }
 
-/* Product cards */
 .product-card {
     width: 180px;
     background: white;
@@ -183,20 +179,17 @@ form button {
     font-size: 18px;
 }
 
-/* Remove button */
 .remove-form {
     display: block;
     margin-top: 10px;
     text-align: center;
 }
 
-/* Add product button */
 .add-product-form button {
     background-color: #4CAF50;
     color: white;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .navbar {
         padding: 15px 5%;
@@ -220,4 +213,37 @@ form button {
         width: 45%;
         max-width: 180px;
     }
+}
+
+.user-list-wrapper {
+    background: #f5821f;
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th {
+    background: #FD5DA8;
+    color: black;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 30px;
+}
+
+.user-table td {
+    background: white;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    font-size: 18px;
+}
+
+.user-table tr:hover td {
+    background: #ffe0c4;
 }

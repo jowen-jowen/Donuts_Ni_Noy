@@ -36,10 +36,135 @@
     </nav>
 </div>
 
+<br><br><br>
+<h1 style="font-size: 50px">Admin Dashboard</h1>
+<br><br><br>
+
+<div class="shop-wrapper user-list-wrapper">
+    <h1 style="text-align: center">Registered Users</h1>
+    <table class="user-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>User Type</th>
+            <th>Created At</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            {% if user.user_type != 'admin' %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.user_type }}</td>
+                    <td>{{ user.created_at }}</td>
+                    <td>
+                        <!-- Remove user -->
+                        <form action="{{ url_for('remove_user', user_id=user.id) }}" method="POST"
+                              style="display:inline;">
+                            <button style="border: 1px; background:  red; color: white" type="submit">Remove</button>
+                        </form>
+                        <!-- Promote to Admin -->
+                        <form action="{{ url_for('promote_user', user_id=user.id) }}" method="POST"
+                              style="display:inline;">
+                            <button style="border: 1px; background: green; color: white" type="submit">Promote to Admin</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <hr><br><br>
+
+    <h1 style="text-align: center">Admins</h1>
+    <table class="user-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>User Type</th>
+            <th>Created At</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            {% if user.user_type == 'admin' %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.user_type }}</td>
+                    <td>{{ user.created_at }}</td>
+                    <td>
+                        <!-- Remove user -->
+                        <form action="{{ url_for('remove_user', user_id=user.id) }}" method="POST"
+                              style="display:inline;">
+                            <button style="border: 1px; background: red; color: white" type="submit">Remove</button>
+                        </form>
+                        <!-- Demote user -->
+                        <form action="{{ url_for('demote_user', user_id=user.id) }}" method="POST"
+                              style="display:inline;">
+                            <button style="border: 2px; background: #512da8; color: white" type="submit">Demote to User</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <br><br>
+    <h1 style="text-align: center">Pending Users</h1>
+    <table class="user-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in pending_users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.created_at }}</td>
+                <td>
+                    <!-- Remove user -->
+                    <form action="{{ url_for('remove_pending_user', user_id=user.id) }}" method="POST"
+                          style="display:inline;">
+                        <button type="submit" style="background-color:red;color:white;">Remove</button>
+                    </form>
+                    <!-- Approve user -->
+                    <form action="{{ url_for('approve_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" style="background-color:green;color:white;">Approve</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
 <div class="shops">
     <!-- Admin Dashboard - Add Shops Form -->
     <div class="shop-wrapper">
-        <h1>Admin Dashboard</h1>
+        <h1>Add Shops</h1>
         <button id="toggleShopForm">➕ Add Shops</button>
 
         <!-- Add Shop Form -->
