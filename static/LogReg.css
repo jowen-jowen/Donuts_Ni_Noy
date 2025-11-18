@@ -4,9 +4,7 @@
     box-sizing: border-box;
 }
 
-
 body {
-    position: relative;
     font-family: 'Lobster', cursive;
     display: flex;
     flex-direction: column;
@@ -14,9 +12,9 @@ body {
     align-items: center;
     justify-content: flex-start;
     overflow-x: hidden;
+    position: relative;
 }
 
-/* --- Gradient background with fade overlay --- */
 body::before {
     content: "";
     position: fixed;
@@ -267,6 +265,7 @@ nav ul li a:hover {
 .container.active .toggle-right {
     transform: translateX(200%);
 }
+
 .login-error {
     margin-top: 10px;
     color: #fff;
@@ -279,7 +278,12 @@ nav ul li a:hover {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-

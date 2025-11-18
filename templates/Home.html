@@ -4,38 +4,42 @@
     <meta charset="utf-8">
     <title>Donuts ni Noy</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Home.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
+
     <video autoplay muted loop class="video-bg">
         <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
     </video>
 
+    <!-- Navbar -->
     <div class="navbar">
         <div class="logo">
             <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"></a>
         </div>
+
         <nav>
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('shops') }}">Shops</a></li>
                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
                 <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+
                 {% if session.get('user_id') %}
                     {% if session.get('user_type') == 'admin' %}
                         <li><a href="{{ url_for('admin') }}">Admin Dashboard</a></li>
                     {% endif %}
-                    <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a></li>
-                    <li style="color:#fff; font-size:22px;">Hello! {{ session.get('name', 'User') }}</li>
+
+                    <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to log out?')">Logout</a></li>
+                    <li style="color: white">Hello! {{ session.get('name', 'User') }}</li>
+
                 {% else %}
                     <li><a href="{{ url_for('login') }}">Login/Register</a></li>
                 {% endif %}
-
             </ul>
         </nav>
     </div>
@@ -44,8 +48,9 @@
         <div class="hero-text">
             <h1>Donuts ni Noy</h1>
             <p>Order Online Now!</p>
-            <a href="/shops" class="btn">Order Now! →</a>
+            <a href="/shops" class="btn">Order Now →</a>
         </div>
+
         <div class="hero-image">
             <img src="{{ url_for('static', filename='background.jpg') }}" alt="Donuts">
         </div>

@@ -3,86 +3,87 @@
 <head>
     <meta charset="utf-8">
     <title>Cart</title>
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Cart.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='tabicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Italianno&family=Lobster&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
 <div class="navbar">
     <div class="logo">
-        <a href="/"><img src="{{ url_for('static', filename='logo.png') }}"></a>
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
+        </a>
     </div>
+
     <nav>
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('shops') }}">Shops</a></li>
             <li><a href="{{ url_for('cart') }}">Cart</a></li>
             <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+
             {% if session.get('user_id') %}
                 {% if session.get('user_type') == 'admin' %}
-                    <li><a href="{{ url_for('admin') }}">Admin Dashboard</a></li>
+                <li><a href="{{ url_for('admin') }}">Admin Dashboard</a></li>
                 {% endif %}
-                <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a>
-                </li>
+                <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a></li>
+                <li class="greeting">Hello! {{ session.get('name', 'User') }}</li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login/Register</a></li>
             {% endif %}
-            <li style="color:#fff; font-size:22px;">Hello! {{ session.get('name', 'User') }}</li>
         </ul>
     </nav>
 </div>
 
 <div class="cart-wrapper">
-
     <div class="left-cart">
         {% if cart_items %}
             {% for item in cart_items %}
-                <div class="cart-box">
+            <div class="cart-box">
 
-                    <div class="food-img">
-                        <img src="{{ url_for('static', filename='uploads/' ~ item.product_img) }}">
-                    </div>
-
-                    <div class="food-info-horizontal">
-                        <span><b>Name:</b> {{ item.product_name }}</span>
-                        <span><b>Price:</b> ₱{{ item.price }}</span>
-
-                        <span><b>Quantity:</b>
-                            <input type="number" class="qty-input"
-                                   data-id="{{ item.unique_id }}"
-                                   data-price="{{ item.price }}"
-                                   min="1" max="10"
-                                   value="{{ item.quantity }}">
-                        </span>
-                    </div>
-
-                    <form class="remove-form" action="{{ url_for('remove_cart_item') }}" method="POST">
-                        <input type="hidden" name="product_id" value="{{ item.product_id }}">
-                        <input type="hidden" name="shop_table" value="{{ item.shop_table }}">
-                        <button class="remove-btn">Remove</button>
-                    </form>
-
+                <div class="food-img">
+                    <img src="{{ url_for('static', filename='uploads/' ~ item.product_img) }}" alt="{{ item.product_name }}">
                 </div>
+
+                <div class="food-info-horizontal">
+                    <span><b>Name:</b> {{ item.product_name }}</span>
+                    <span><b>Price:</b> ₱{{ item.price }}</span>
+                    <span><b>Qty:</b>
+                        <input type="number" class="qty-input"
+                               data-id="{{ item.unique_id }}"
+                               data-price="{{ item.price }}"
+                               min="1" max="10" value="{{ item.quantity }}">
+                    </span>
+                </div>
+
+                <form class="remove-form" action="{{ url_for('remove_cart_item') }}" method="POST">
+                    <input type="hidden" name="product_id" value="{{ item.product_id }}">
+                    <input type="hidden" name="shop_table" value="{{ item.shop_table }}">
+                    <button class="remove-btn">Remove</button>
+                </form>
+            </div>
             {% endfor %}
         {% else %}
-            <p style="font-size: 26px;">Your cart is empty!</p>
+            <p style="font-size:18px; color:#fff; padding:20px;">Your cart is empty!</p>
         {% endif %}
     </div>
 
     {% if cart_items %}
-    <div class="order-summary">
-
+    <div class="order-summary" aria-live="polite">
         <h2>Order Summary</h2>
 
         {% for item in cart_items %}
-            <div class="summary-row" id="summary-{{ item.unique_id }}">
-                <span>{{ item.product_name }}</span>
-                <span>Qty: <span class="summary-qty">{{ item.quantity }}</span></span>
-                <span>₱<span class="item-total">{{ item.price * item.quantity }}</span></span>
-            </div>
+        <div class="summary-row" id="summary-{{ item.unique_id }}">
+            <span style="flex:1; text-align:left;">{{ item.product_name }}</span>
+            <span>Qty: <span class="summary-qty">{{ item.quantity }}</span></span>
+            <span>₱<span class="item-total">{{ (item.price * item.quantity) | round(2, 'floor') }}</span></span>
+        </div>
         {% endfor %}
 
         <hr class="divider">
@@ -97,107 +98,95 @@
         </a>
     </div>
     {% endif %}
+
 </div>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".qty-input").forEach(input => {
+            input.addEventListener("change", function () {
+                let newQty = parseInt(this.value);
+                if (isNaN(newQty) || newQty < 1) newQty = 1;
+                if (newQty > 10) newQty = 10;
+                this.value = newQty;
 
+                const price = parseFloat(this.dataset.price) || 0;
+                const id = this.dataset.id;
+                const summaryRow = document.getElementById("summary-" + id);
+                if (summaryRow) {
+                    const qtySpan = summaryRow.querySelector(".summary-qty");
+                    const totalSpan = summaryRow.querySelector(".item-total");
+                    if (qtySpan) qtySpan.textContent = newQty;
+                    if (totalSpan) totalSpan.textContent = (price * newQty).toFixed(2);
+                }
 
-
-document.querySelectorAll(".qty-input").forEach(input => {
-    input.addEventListener("change", function () {
-
-        let newQty = parseInt(this.value);
-
-        if (newQty < 1) newQty = 1;
-        if (newQty > 10) newQty = 10;
-
-        this.value = newQty;
-
-        const price = parseFloat(this.dataset.price);
-        const id = this.dataset.id;
-
-        const summaryRow = document.getElementById("summary-" + id);
-
-        summaryRow.querySelector(".summary-qty").textContent = newQty;
-
-        const newTotal = price * newQty;
-        summaryRow.querySelector(".item-total").textContent = newTotal.toFixed(2);
-
-        let grandTotal = 0;
-        document.querySelectorAll(".item-total").forEach(el => {
-            grandTotal += parseFloat(el.textContent);
+                let grandTotal = 0;
+                document.querySelectorAll(".item-total").forEach(el => {
+                    grandTotal += parseFloat(el.textContent) || 0;
+                });
+                const grandNode = document.querySelector("#grand-total span:last-child");
+                if (grandNode) grandNode.textContent = "₱" + grandTotal.toFixed(2);
+            });
         });
 
-        document.querySelector("#grand-total span:last-child").textContent =
-            "₱" + grandTotal.toFixed(2);
+        document.querySelectorAll(".remove-form").forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch(this.action, { method: "POST", body: formData })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            const box = this.closest(".cart-box");
+                            const qtyInput = box ? box.querySelector(".qty-input") : null;
+                            const uniqueID = qtyInput ? qtyInput.dataset.id : null;
+
+                            if (box) box.remove();
+
+                            if (uniqueID) {
+                                const summaryRow = document.getElementById("summary-" + uniqueID);
+                                if (summaryRow) summaryRow.remove();
+                            }
+
+                            updateGrandTotal();
+                            showPopup(data.message);
+                        } else {
+                            showPopup(data.message, true);
+                        }
+                    })
+                    .catch(() => showPopup("Error removing item!", true));
+            });
+        });
+
+        function updateGrandTotal() {
+            let grand = 0;
+            document.querySelectorAll(".item-total").forEach(el => {
+                grand += parseFloat(el.textContent) || 0;
+            });
+            const node = document.querySelector("#grand-total span:last-child");
+            if (node) node.textContent = "₱" + grand.toFixed(2);
+        }
+
+        function showPopup(message, error = false) {
+            const popup = document.createElement("div");
+            popup.textContent = message;
+            popup.style.position = "fixed";
+            popup.style.top = "20px";
+            popup.style.right = "20px";
+            popup.style.padding = "12px 18px";
+            popup.style.borderRadius = "8px";
+            popup.style.fontSize = "16px";
+            popup.style.zIndex = "9999";
+            popup.style.color = "white";
+            popup.style.background = error ? "#ff4d4d" : "#1ec94c";
+            popup.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+            document.body.appendChild(popup);
+            setTimeout(() => { popup.style.opacity = "0"; popup.style.transition = "opacity .5s"; }, 1400);
+            setTimeout(() => popup.remove(), 1900);
+        }
     });
-});
-
-document.querySelectorAll(".remove-form").forEach(form => {
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-
-        fetch(this.action, {
-            method: "POST",
-            body: formData
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    this.closest(".cart-box").remove();
-
-                    const uniqueID = this.closest(".cart-box")
-                        .querySelector(".qty-input").dataset.id;
-
-                    const summaryRow = document.getElementById("summary-" + uniqueID);
-                    if (summaryRow) summaryRow.remove();
-
-                    updateGrandTotal();
-                    showPopup(data.message);
-                } else {
-                    showPopup(data.message, true);
-                }
-            })
-            .catch(() => showPopup("Error removing item!", true));
-    });
-});
-
-function updateGrandTotal() {
-    let grand = 0;
-    document.querySelectorAll(".item-total").forEach(el => {
-        grand += parseFloat(el.textContent);
-    });
-
-    document.querySelector("#grand-total span:last-child").textContent =
-        "₱" + grand.toFixed(2);
-}
-
-function showPopup(message, error = false) {
-    const popup = document.createElement("div");
-    popup.textContent = message;
-
-    popup.style.position = "fixed";
-    popup.style.top = "20px";
-    popup.style.right = "20px";
-    popup.style.padding = "15px 25px";
-    popup.style.borderRadius = "10px";
-    popup.style.fontSize = "20px";
-    popup.style.zIndex = "9999";
-    popup.style.color = "white";
-    popup.style.background = error ? "#ff4d4d" : "#1ec94c";
-    popup.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
-
-    document.body.appendChild(popup);
-
-    setTimeout(() => {
-        popup.style.opacity = "0";
-        popup.style.transition = "0.5s";
-    }, 1500);
-
-    setTimeout(() => popup.remove(), 2000);
-}
 </script>
+
 </body>
 </html>

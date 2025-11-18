@@ -13,6 +13,7 @@ body {
     align-items: center;
     justify-content: flex-start;
     overflow-x: hidden;
+    background: #FD5DA8;
 }
 
 body::before {
@@ -42,30 +43,33 @@ body::after {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 20px 15%;
+    padding: 20px 10%;
     background: rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 10;
 }
 
-nav {
-    flex: 1;
-    text-align: right;
+.logo img {
+    width: 125px;
+    height: auto;
 }
 
 nav ul {
     list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 nav ul li {
-    display: inline-block;
-    margin-left: 30px;
+    margin-left: 20px;
 }
 
 nav ul li a {
     text-decoration: none;
     color: #ffffff;
-    font-size: 25px;
+    font-size: 18px;
     transition: 0.3s;
 }
 
@@ -73,27 +77,13 @@ nav ul li a:hover {
     color: #f5821f;
 }
 
-@media (max-width: 768px) {
-    .navbar {
-        padding: 15px 5%;
-    }
-
-    nav ul li {
-        margin-left: 15px;
-    }
-}
-
-a {
-    text-decoration: none;
-    color: #ffffff;
-}
-
 .shops {
     text-align: center;
     background: rgba(245, 130, 31, 0.9);
     border-radius: 30px;
-    padding: 60px;
+    padding: 60px 20px;
     max-width: 1200px;
+    width: 95%;
     margin: 5% auto;
     color: #000;
 }
@@ -108,7 +98,11 @@ a {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 .shop-card, .product-card {
@@ -195,4 +189,98 @@ a {
 
 .cart-btn:hover {
     background: #e06d12;
+}
+
+
+@media (max-width: 1024px) {
+    .shops h1 {
+        font-size: 40px;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+    }
+
+
+    .shop-card, .product-card {
+        width: 220px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 5%;
+    }
+
+    .logo img {
+        width: 80px;
+        height: auto;
+    }
+
+    nav ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    nav ul li {
+        margin-left: 12px;
+        white-space: nowrap;
+    }
+
+    nav ul li a {
+        font-size: 14px;
+    }
+
+
+    .shops {
+        padding: 40px 15px;
+    }
+
+    .shop-container {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .shop-card, .product-card {
+        width: 90%;
+        max-width: 300px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .logo img {
+        width: 60px;
+    }
+
+    nav ul li {
+        margin-left: 10px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .shops h1 {
+        font-size: 32px;
+    }
+
+    .shop-card, .product-card {
+        width: 95%;
+        max-width: 250px;
+    }
+
+    .shop-container {
+        padding: 0 5px;
+        gap: 15px;
+    }
 }
