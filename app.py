@@ -80,7 +80,7 @@ def register():
             app_password = "vtwk zbdv ulxe bzpm"  # Gmail app password
             msg = MIMEText(f"Your OTP code is: {otp}")
             msg['Subject'] = "Your OTP Verification Code"
-            msg['From'] = sender
+            msg['From'] = "Donuts Ni Noy"
             msg['To'] = email
 
             with smtplib.SMTP("smtp.gmail.com", 587) as server:
@@ -210,7 +210,7 @@ def forgot_pass():
 
             msg = MIMEText(f"Your password reset OTP is: {otp}")
             msg['Subject'] = "Password Reset OTP"
-            msg['From'] = "Dunkin Ni Noy"
+            msg['From'] = "Donuts Ni Noy"
             msg['To'] = email
 
             with smtplib.SMTP("smtp.gmail.com", 587) as server:

@@ -33,7 +33,7 @@
                 <li><a href="{{ url_for('admin') }}">Admin Dashboard</a></li>
                 {% endif %}
                 <li><a href="{{ url_for('logout') }}" onclick="return confirm('Are you sure you want to Log-Out?')">Logout</a></li>
-                <li class="greeting">Hello! {{ session.get('name', 'User') }}</li>
+                <li style="color: white">Hello! {{ session.get('name', 'User') }}</li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login/Register</a></li>
             {% endif %}
